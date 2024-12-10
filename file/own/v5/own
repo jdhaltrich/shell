@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+dirsarray=("/laynestaley88/jdhaltrich" "/laynestaley88/layne88" "/users/juancho" "/users/git")
+
+if [[ $(id -un) == "root" ]]; then
+	chown -Rc root:root "${dirsarray[1]}"
+	chown -Rc juancho:juancho "${dirsarray[0]}" "${dirsarray[2]}"
+    chmod -R ugo-rwx "${dirsarray[0]}"
+    chmod -R go-rwx "${dirsarray[2]}"
+    chmod -R u+rwX "${dirsarray[0]}"
+elif [[ $(id -un) == "juancho" ]]; then
+	chown -Rc juancho:juancho "${dirsarray[0]}" "${dirsarray[2]}"
+elif [[ $(id -un) == "git" ]]; then
+	chown -Rc git:git "${dirsarray[3]}"
+fi

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+zs
+zpool export -a
+startzfs 1

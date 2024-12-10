@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+switch=("$@")
+
+case "${switch}" in
+	0)
+		rc-service -v mysql start
+		;;
+	1)
+		rc-service -v mysql stop
+		;;
+esac

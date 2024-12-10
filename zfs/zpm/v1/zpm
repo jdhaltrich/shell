@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+pools=("booklib" "data01" "msk01" "dirt1991" "mysql" "users")
+
+argsarray=("$@")
+poolindex="${argsarray[0]}"
+refreshrate=${argsarray[1]}
+
+selectedpool="${pools[${poolindex}]}"
+zpool status -v "${selectedpool}" ${refreshrate}

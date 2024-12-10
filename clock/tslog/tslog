@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+#declare -a -p array_all
+array_all=("$@")
+
+OPTSTRING="s:f:"
+
+while getopts ${OPTSTRING} opt; do
+	case ${opt} in
+		-s)
+			printf '%s\n' "hay timestamp de inicio"
+			;;
+		-f)
+			printf '%s\n' "hay timestamp de finalizacion"
+			;;
+	esac
+done
+
+#declare -f logf
+logf () {
+#	declare -p starttime_unix finishtime_unix starttime_ts finishtime_ts proctimes_log string_log
+	starttime_unix="${array_all[0]}"
+	finishtime_unix="${array_all[1]}"
+	starttime_ts="${array_all[3]}"
+	finishtime_ts="${array_all[5]}"
+	proctimes_log="${array_all[6]}"
+	string_log="${array_all[7]}"
+	
+	if [[ "${starttime_ts}" != " " ]]; then
+		printf 'start time: %s\n' "${starttime_ts}" > "${proctimes_log}"
+	fi
+
+	if [[ "${finishtime_ts}" != " " ]]; then
+		printf 'finish time: %s\n' "${finishtime_ts}" >> "${proctimes_log}"
+	fi
+
+#	declare -i -p k
+	for (( k = 0; k <= 2; k++ )); do
+		if [[ $k -eq 0 ]]; then
+			measure="seconds"
+		elif [[ $k -eq 1 ]]; then
+			measure="minutes"
+		else
+			measure="hours"
+		fi
+
+#		declare -p proctime
+		proctime="$(source prtime $k "${starttime_unix}" "${finishtime_unix}")"
+		printf '%s: %s %s\n' "${string_log}" "${proctime}" "${measure}" >> "${proctimes_log}"
+	done
+}
+
+logf "${starttime_unix}" "${finishtime_unix}" -s "${starttime_ts}" -f "${finishtime_ts}" "${proctimes_log}" "${string_log}"

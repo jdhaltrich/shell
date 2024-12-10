@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+switch="${argsarray[0]}"
+
+## switches
+# l = lazy search
+# s = specific repository search
+
+case "${switch}" in
+    l)
+        packageid="${argsarray[1]}"
+        emerge -s "${packageid}"
+        equery u "${packageid}"
+        ;;
+    s)
+        gentoorepo="${argsarray[1]}"
+        packageid="${argsarray[2]}"
+        packagefull="${gentoorepo}/${packageid}"
+        emerge -s "${packagefull}"
+        equery u "${packagefull}"
+        ;;
+esac

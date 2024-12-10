@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+argsarray=("$@")
+poolindex="${argsarray[0]}"
+dsindex="${argsarray[1]}"
+
+pool=("booklib" "data01" "msk01" "dirt1991" "mysql")
+ds=("kof" "passwdvault" "layne88")
+
+case ${dsindex} in
+	0)
+		zfs load-key -r "${pool[$poolindex]}/${ds[$dsindex]}"
+		for i in /mnt/zfs/data/data01/${ds[$dsindex]}/*; do
+			dirname="$(printf '%s\n' $i | sed 's/^[^:]*[/]//')"
+			zfs mount -v "${pool[$poolindex]}/${ds[$dsindex]}/${dirname}"
+		done
+		;;
+	1)
+		zfs load-key -r "${pool[$poolindex]}/${ds[$dsindex]}"
+		zfs mount -v "${pool[$poolindex]}/${ds[$dsindex]}"
+		;;
+	2)
+		zfs load-key -r "${pool[$poolindex]}/${ds[$dsindex]}"
+		zfs mount -v "${pool[$poolindex]}/${ds[$dsindex]}"
+		;;
+esac

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+switch="${argsarray[0]}"
+
+## switch reference
+# l = present working directory creation
+# t = target directory creation
+
+case "${switch}" in
+    l)
+        scriptname="${argsarray[1]}"
+        touch "$PWD/${scriptname}"
+        chmod -c u+x "$PWD/${scriptname}"
+        printf '%s\n' "#!/usr/bin/env bash" >> "$PWD/${scriptname}"
+        ;;
+    t)
+        targetdir="${argsarray[1]}"
+        
+        if [[ -z "${argsarray[2]}" ]]; then
+            printf '%s\n' "you need to name the script!"
+            exit 0
+        else
+            scriptname="${argsarray[2]}"
+        fi
+
+        touch "${targetdir}/${scriptname}"
+        chmod -c u+x "${targetdir}/${scriptname}"
+        printf '%s\n' "#!/usr/bin/env bash" >> "${targetdir}/${scriptname}"
+        ;;
+esac

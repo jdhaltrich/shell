@@ -1,0 +1,2 @@
+spliturls.sh	# 20231012 - creates a newline-delimited file with the urls in the input file and saves it in the firefox pages directory with a standarised name
+spliturls_02.sh	# 20231013 - creation of file description called files_description.md to add a short description of the pages saved in the urls file

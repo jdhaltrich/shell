@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+variant="$1"
+basedir="$2"
+target="$3"
+parallel="$4"
+
+cd "${basedir}"
+
+compress () {
+	case ${variant} in
+		1a)
+			tar -cvf "${target}.tar" "${target}"
+			rm -r "${target}"
+			pixz -e -p ${parallel} -i "${target}.tar" -o "${target}.tar.pxz"
+			rm "${target}.tar"
+			;;
+		1b)
+			tar -cvf "${target}.tar" "${target}"
+			rm -r "${target}"
+			xz -z -9e -T ${parallel} -v "${target}.tar"
+			;;
+	esac
+}
+
+decompress () {
+	case ${variant} in
+		2a)
+			pixz -d -p ${parallel} -i "${target}.tar.pxz" -o "${target}.tar"
+			rm "${target}.tar.pxz"
+			tar -xvf "${target}.tar"
+			rm "${target}.tar"
+			;;
+		2b)
+			tar -Jxf "${target}.tar.xz"
+			rm "${target}.tar.xz"
+			;;
+	esac
+}
+
+case ${variant} in
+	1a)
+		compress ${variant} "${target}" ${parallel}
+		;;
+	1b)
+		compress ${variant} "${target}" ${parallel}
+		;;
+	2a)
+		decompress ${variant} "${target}" ${parallel}
+		;;
+	2b)
+		decompress ${variant} "${target}"
+		;;
+esac

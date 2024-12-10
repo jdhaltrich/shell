@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+openpools=$(zpool list -H | cut -f 1 | wc -l)
+pools=()
+
+for (( k = 1; k <= ${openpools}; k++ )); do
+    currentpool="$(printf '%s\n' "$(zpool list -H | cut -f 1 | head -n $k | tail -n 1)")"
+    pools[$((k-1))]="${currentpool}"
+done
+
+for (( k = 1; k <= ${openpools}; k++ )); do
+    date_ns="snap"$(date --iso-8601=ns | sed -e 's/://g;s/-/_/3g;s/-//g;s/T/t/g;s/,/_/g')
+    zfs snapshot -r ${pools[$((k-1))]}@"${date_ns}"
+done

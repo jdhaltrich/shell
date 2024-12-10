@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [[ $(id -un) == "root" ]]; then
+#	chown -Rv root:root /laynestaley88
+	chown -Rv juancho:juancho /users/juancho_gentoo
+	chown -Rv git:git /users/git
+elif [[ $(id -un) == "juancho" ]]; then
+	chown -Rv juancho:juancho /users/juancho_gentoo
+elif [[ $(id -un) == "git" ]]; then
+	chown -Rv git:git /users/git
+fi

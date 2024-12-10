@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+string="$1"
+
+function filerename() {
+	rootfiledir="$(printf '%s\n' "${string}" | sed 's/\/[^/]*$//')"
+	rootfilename01_full="$(printf '%s\n' "${string}" | sed 's/^[^:]*[/]//')"
+	rootfilename02_base="$(printf '%s\n' "${rootfilename01_full}" | sed 's/\.[^\.]*$//')"
+	rootformat="$(printf '%s\n' "${rootfilename01_full}" | sed 's/.*\././')"
+	targetfilename01_base="$(printf '%s\n' "${rootfilename02_base}" | sed 's/!//g;s/@//g;s/#//g;s/\$//g;s/%//g;s/\^//g;s/&//g;s/*//g;s/(//g;s/)//g;s/-//g;s/,//g;s/\[//g;s/\]//g;s/{//g;s/}//g' | sed "s/'//g" | sed "s/ /_/g;s/\(.*\)/\L\1/g" | sed 's/\.//2g')"
+	targetfilename02_full="${targetfilename01_base}${rootformat}"
+	targetfilepath="${rootfiledir}/${targetfilename02_full}"
+	
+	printf '%s: %s\n' "string" "${string}"
+	printf '%s: %s\n' "rootfiledir" "${rootfiledir}"
+	printf '%s: %s\n' "rootfilename01_full" "${rootfilename01_full}"
+	printf '%s: %s\n' "rootfilename02_base" "${rootfilename02_base}"
+	printf '%s: %s\n' "rootformat" "${rootformat}"
+	printf '%s: %s\n' "targetfilename01_base" "${targetfilename01_base}"
+	printf '%s: %s\n' "targetfilename02_full" "${targetfilename02_full}"
+	printf '%s: %s\n' "targetfilepath" "${targetfilepath}"
+}
+
+filerename "${string}"

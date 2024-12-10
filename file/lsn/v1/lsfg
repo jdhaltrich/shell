@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+target_directory="$1"
+printf '%s\n' "$target_directory"	# temporary code. this prints whatever input was stored by the variable. need to solve printing absolute filepath of target directory
+if [[ "$target_directory" == "" ]]; then
+	printf '%s\n' "$PWD"
+	ls -lah --color=auto --time-style=full-iso --group-directories-first "$PWD"
+else
+	printf '%s\n' "$target_directory"
+	ls -lah --color=auto --time-style=full-iso --group-directories-first "$target_directory"
+fi

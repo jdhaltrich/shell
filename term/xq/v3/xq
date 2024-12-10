@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+userbasedirs=("/laynestaley88" "/users/juancho" "/users/git")
+
+if [[ $(id -un) == "root" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[0]}")
+elif [[ $(id -un) == "juancho" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[1]}")
+elif [[ $(id -un) == "git" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[2]}")
+fi
+
+printf '%s\n' $PPID
+printf '%s\n' $$
+
+cd "${selectedbasedir}"
+clear
+printf '%s\n' "${selectedbasedir}"
+exit

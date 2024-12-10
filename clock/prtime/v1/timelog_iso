@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+basedir="/users/juancho_gentoo/linuxstp"
+logdir="/users/juancho_gentoo/test/log"
+tgtdir="/users/juancho_gentoo/test/linuxstpStruct_iso"
+
+if [[ ! -d "${logdir}" ]]; then
+	mkdir -p "${logdir}"
+fi
+
+cd /users/juancho_gentoo
+
+SECONDS=0
+#dtstart_iso=$(date --iso-8601=ns)
+dtstart_iso=$(date +%s%N)
+
+printf '%s\n' "${dtstart_iso}" > "${logdir}/logiso"
+
+cd "$basedir" && find . -type d -exec mkdir -p -- "$tgtdir"/{} \;
+
+duration_sec=${SECONDS}
+duration_min=$((duration_sec / 60))
+duration_hr=$((duration_min / 60))
+duration_day=$((duration_hr / 24))
+
+#dtend_iso=$(date --iso-8601=ns)
+dtend_iso=$(date +%s%N)
+exectime_iso=$(( (${dtend_iso} - ${dtstart_iso}) / 1000000000 ))
+printf '%s\n' "${dtend_iso}" >> "${logdir}/logiso"
+printf '%s\n' "${exectime_iso}" >> "${logdir}/logiso"
+printf '%s: %s\n' "execution time in seconds is" "${duration_sec}" >> "${logdir}/logiso"
+printf '%s: %s\n' "execution time in minutes is" "${duration_min}" >> "${logdir}/logiso"
+printf '%s: %s\n' "execution time in hours is" "${duration_hr}" >> "${logdir}/logiso"
+printf '%s: %s\n' "execution time in days is" "${duration_day}" >> "${logdir}/logiso"

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+date_ns=$(date --iso-8601=ns | sed -e 's/://g;s/-/_/3g;s/-//g;s/T/t/g;s/,/_/g')
+
+argsarray=("$@")
+gentoorepo="${argsarray[0]}"
+pkgname="${argsarray[1]}"
+
+declare -a flagsarray
+printf '%s\n' "enter elements (press enter and then Ctrl+D to end):"
+readarray -t flagsarray
+
+#flags="$(sed -e 's/$/string after each line/' "${flagsarray[@]}")"
+#echo "${flags}"
+#echo "${flagsarray[@]}"
+
+flags=""
+
+for k in "${flagsarray[@]}"; do
+    flags+="$(printf '%s ' "$k")"
+done
+
+#printf '%s\n' "${flags}"
+printf '%s %s\t\t# %s\n' "${gentoorepo}/${pkgname}" "${flags}" "${date_ns}" >> "/etc/portage/package.use/${gentoorepo}"

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+argsarray=("$@")
+impexpindex="${argsarray[0]}"
+poolindex="${argsarray[1]}"
+
+impexp=("import" "export")
+pool=("booklib" "data01" "msk01" "dirt1991" "mysql" "users")
+
+zpool ${impexp["${impexpindex}"]} ${pool["${poolindex}"]}

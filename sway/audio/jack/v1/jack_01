@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+jack_control status
+
+jack_control exit
+
+jack_control dg
+jack_control start
+jack_control ds alsa
+jack_control dps device "hw:D10,0"
+jack_control dps rate 44100
+jack_control dps nperiods 2
+jack_control dps period 1024
+
+: '
+--- get driver parameters (type:isset:default:value)
+              device: ALSA device name (str:set:hw:0:hw:D10,0)
+             capture: Provide capture ports.  Optionally set device (str:set:none:hw:D10)
+            playback: Provide playback ports.  Optionally set device (str:set:none:hw:D10)
+                rate: Sample rate (uint:set:48000:44100)
+              period: Frames per period (uint:set:1024:1024)
+            nperiods: Number of periods of playback latency (uint:set:2:2)
+               hwmon: Hardware monitoring, if available (bool:set:False:True)
+             hwmeter: Hardware metering, if available (bool:set:False:False)
+              duplex: Provide both capture and playback ports (bool:set:True:True)
+            softmode: Soft-mode, no xrun handling (bool:set:False:False)
+             monitor: Provide monitor ports for the output (bool:set:False:False)
+              dither: Dithering mode (char:set:n:n)
+          inchannels: Number of capture channels (defaults to hardware max) (uint:notset:0:0)
+         outchannels: Number of playback channels (defaults to hardware max) (uint:notset:0:0)
+              shorts: Try 16-bit samples before 32-bit (bool:set:False:False)
+       input-latency: Extra input latency (frames) (uint:notset:0:0)
+      output-latency: Extra output latency (frames) (uint:notset:0:0)
+         midi-driver: ALSA MIDI driver (str:notset:none:none)
+
+
+
+
+    exit                       - exit jack dbus service (stops jack server if currently running)
+    help                       - print this help text
+    status                     - check whether jack server is started, return value is 0 if running and 1 otherwise
+    start                      - start jack server if not currently started
+    stop                       - stop jack server if currently started
+    sm                         - switch master to currently selected driver
+    dl                         - get list of available drivers
+    dg                         - get currently selected driver
+    ds <driver>                - select driver
+    dp                         - get parameters of currently selected driver
+    dpd <param>                - get long description for driver parameter
+    dps <param> <value>        - set driver parameter
+    dpr <param>                - reset driver parameter to its default value
+    asd <driver>               - add slave driver
+    rsd <driver>               - remove slave driver
+    il                         - get list of available internals
+    ip <name>                  - get parameters of given internal
+    ipd <name> <param>         - get long description for internal parameter
+    ips <name> <param> <value> - set internal parameter
+    ipr <name> <param>         - reset internal parameter to its default value
+    iload <name>               - load internal
+    iunload <name>             - unload internal
+    ep                         - get engine parameters
+    epd <param>                - get long description for engine parameter
+    eps <param> <value>        - set engine parameter
+    epr <param>                - reset engine parameter to its default value
+
+--- get engine parameters (type:isset:default:value)
+              driver: Driver to use (str:set:dummy:alsa)
+                name: Server name to use. (str:notset:default:default)
+            realtime: Whether to use realtime mode. (bool:set:True:True)
+   realtime-priority: Scheduler priority when running in realtime mode. (sint:notset:10:10)
+           temporary: Exit once all clients have closed their connections. (bool:notset:False:False)
+             verbose: Verbose mode. (bool:set:False:True)
+      client-timeout: Client timeout limit in milliseconds. (sint:notset:0:0)
+        clock-source: Clocksource type : c(ycle) | h(pet) | s(ystem). (uint:notset:0:0)
+            port-max: Maximum number of ports. (uint:notset:2048:2048)
+    replace-registry: Replace shared memory registry. (bool:notset:False:False)
+                sync: Use server synchronous mode. (bool:set:False:True)
+   self-connect-mode: Self connect mode. (char:notset: : )
+       slave-drivers: Slave drivers to use (str:notset::)
+'

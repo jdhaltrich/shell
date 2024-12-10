@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+program="$1"
+argument="$2"
+target="$3"
+output="/dev/null 2>&1&"
+
+nohup "${program}" "${argument}" "${target}" > "${output}"

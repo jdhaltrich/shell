@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+refreshlvl="$1"
+
+set -o errexit
+
+function trimallfs() {
+	fstrim -v /users
+	fstrim -v /mysql_db
+	fstrim -v /
+}
+
+function envupdtsrc() {
+	env-update && source /etc/profile
+}
+
+if [[ "${refreshlvl}" == "1" ]]; then
+	trimallfs
+elif [[ "${refreshlvl}" == "2" ]]; then
+	envupdtsrc
+elif [[ "${refreshlvl}" == "all" ]]; then
+	trimallfs
+	envupdtsrc
+fi

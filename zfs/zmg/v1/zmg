@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+action="$1"
+poolindex="$2"
+
+pool=("booklib" "data_01" "msk_01")
+
+date_ns="snap"$(date --iso-8601=ns | sed -e 's/://g;s/-/_/3g;s/-//g;s/T/t/g;s/,/_/g')
+
+case ${action} in
+	pls)
+		if [[ ${poolindex} == "" ]]; then
+			zpool list -Pv -T d
+		else
+			zpool list -Pv -T d ${pool[${poolindex}]}
+		fi
+		;;
+	fls)
+		if [[ ${poolindex} == "" ]]; then
+			zfs list -r -t all
+		else
+			zfs list -r -t all ${pool[${poolindex}]}
+		fi
+		;;
+	snp)
+		zfs snapshot -r ${pool[${poolindex}]}@"${date_ns}"
+		;;
+esac

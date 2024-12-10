@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+switch="$1"
+
+case "${switch}" in
+	0)
+		rc-service -v zfs-import start
+		rc-service -v zfs-mount start
+		rc-service -v zfs-load-key start
+		;;
+	1)
+		rc-service -v zfs-load-key stop
+		rc-service -v zfs-mount stop
+		rc-service -v zfs-import stop
+		;;
+esac

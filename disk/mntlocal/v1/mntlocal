@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+mnttype="${argsarray[0]}"
+blockdevice="${argsarray[1]}"
+localmntpoint="${argsarray[2]}"
+
+fstype="$(lsblk -no fstype "${blockdevice}")"
+fsuuid="$(lsblk -no uuid "${blockdevice}")"
+
+case "${mnttype}" in
+	m)
+		mount -v -t "${fstype}" -o rw UUID="${fsuuid}" "${localmntpoint}"
+		;;
+	u)
+		umount -v UUID="${fsuuid}"
+		;;
+esac

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+argslength=${#argsarray[*]}
+basedir="$(printf '%s\n' "$PWD")"
+
+for (( k = 1; k <= ${argslength}; k++ )); do
+    targetdir="${basedir}/${argsarray[$((k-1))]}"
+    mkdir -pv "${targetdir}"
+    chmod -Rc 0700 "${targetdir}"
+done

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+basedir="/users/juancho_gentoo/linuxstp"
+logdir="/users/juancho_gentoo/test/log"
+tgtdir="/users/juancho_gentoo/test/linuxstpStructRFC"
+tgtdir2="/users/juancho_gentoo/test/linuxstpStructISO"
+
+if [[ ! -d "${logdir}" ]]; then
+	mkdir -p "${logdir}"
+fi
+
+cd /users/juancho_gentoo
+dtstart_rfc="$(date --rfc-3339=ns)"
+printf '%s\n' "${dtstart_rfc}" > "${logdir}/logrfc"
+cd "$basedir" && find . -type d -exec mkdir -p -- "$tgtdir"/{} \;
+dtend_rfc="$(date --rfc-3339=ns)"
+printf '%s\n' "${dtstart_rfc}" >> "${logdir}/logrfc"
+
+cd /users/juancho_gentoo
+dtstart_iso="$(date --iso-8601=ns)"
+printf '%s\n' "${dtstart_rfc}" > "${logdir}/logiso"
+cd "$basedir" && find . -type d -exec mkdir -p -- "$tgtdir2"/{} \;
+dtend_iso="$(date --iso-8601=ns)"
+printf '%s\n' "${dtstart_rfc}" >> "${logdir}/logiso"

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+openpools=$(zpool list -H | cut -f 1 | wc -l)
+pools=()
+
+for (( k = 1; k <= ${openpools}; k++ )); do
+    currentpool="$(printf '%s\n' "$(zpool list -H | cut -f 1 | head -n $k | tail -n 1)")"
+    pools[$((k-1))]="${currentpool}"
+done
+
+snaps=()
+
+for (( k = 1; k <= ${openpools}; k++ )); do
+    items=$(zfs list -Ht snap ${pools[$((k-1))]} | cut -f 1 | wc -l)
+    for (( g = 1; g <= ${items}; g++ )); do
+        snapslength=${#snaps[*]}
+        newitem="$(printf '%s\n' "$(zfs list -Ht snap ${pools[$((k-1))]} | cut -f 1 | head -n $g | tail -n 1)")"
+        snaps[$((snapslength))]="${newitem}"
+    done
+done
+
+snapslengthn=${#snaps[*]}
+
+if [[ $snapslengthn -eq 0 ]]; then
+    printf '%s\n' "no snapshots on any zpool"
+    exit 0
+else
+    for (( k = 1; k <= ${snapslengthn}; k++ )); do
+        currentsnap="${snaps[$((k-1))]}"
+        zfs destroy -r "${currentsnap}"
+    done
+fi

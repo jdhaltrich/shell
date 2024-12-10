@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+scriptname=("$@")
+touch "$PWD/${scriptname}"
+chmod -c u+x "$PWD/${scriptname}"
+printf '%s\n' "#!/usr/bin/env bash" >> "$PWD/${scriptname}"

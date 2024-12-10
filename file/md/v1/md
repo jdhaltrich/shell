@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+targetdir="${argsarray[0]}"
+cd "$PWD"
+mkdir -pv "${targetdir}"
+chmod -Rc 0700 "${targetdir}"

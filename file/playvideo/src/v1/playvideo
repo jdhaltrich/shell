@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+mainswitch="${argsarray[0]}"
+targetdir="${argsarray[1]}"
+linksdir="${targetdir}/links"
+
+OPTSTRING="df"
+
+while getopts ${OPTSTRING} opt; do
+    case ${opt} in
+        -d)
+            printf '%s\n' "subtitles in directory path"
+            ;;
+        -f)
+            printf '%s\n' "subtitle file"
+            ;;
+    esac
+done
+
+
+## switch reference
+# l = run script in present working directory
+# t = run script in target directory
+
+subtitlesdir () {
+    case "${dirtypeswitch}" in
+        -l)
+            cwd0="$PWD"
+            cd "${cwd0}"
+            subtitlesdir="${argsarray[2]}"
+            targetfile="${argsarray[3]}"
+            mpv --sub-file-paths="${cwd0}/${subtitlesdir}/" "${cwd0}/${targetfile}"
+            ;;
+        -t)
+            subtitlesdir="${argsarray[2]}"
+            targetfile="${argsarray[3]}"
+            mpv --sub-file-paths="${subtitlesdir}" "${targetfile}"
+            ;;
+    esac
+}
+
+subtitlesfile () {
+    targetfile="${linksdir}/${argsarray[2]}"
+    subfiles_q=$(find "${linksdir}" -type l -name "s*" | wc -l)
+    subfilels=""
+
+    if [[ ${subfiles_q} -eq 0 ]]; then
+        mpv "${targetfile}"
+    elif [[ ${subfiles_q} -eq 1 ]]; then
+        subfilels+="$(printf '%s' "$(find "${linksdir}" -type l -name "s*")")"
+    else
+        for (( n = 1; n <= ${subfiles_q}; n++ )); do
+            if [[ $n -eq 1 ]]; then 
+                subfilels+="$(printf '%s%s%s' "{" "$(find "${linksdir}" -type l -name "s*" | head -n $n | tail -n 1)" ",")"
+            elif [[ $n -lt $((subfiles_q-1)) ]]; then
+                subfilels+="$(printf '%s%s' "$(find "${linksdir}" -type l -name "s*" | head -n $n | tail -n 1)" ",")"
+            else
+                subfilels+="$(printf '%s%s' "$(find "${linksdir}" -type l -name "s*" | head -n $n | tail -n 1)" "}")"
+            fi
+        done
+    fi
+
+    mpv --sub-file="${subfilels}" "${targetfile}"
+}
+
+
+scrmode () {
+    case "${mainswitch}" in
+        -d)
+            subtitlesdir
+            ;;
+        -f)
+            subtitlesfile
+            ;;
+    esac
+}
+
+scrmode "${mainswitch}"

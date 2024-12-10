@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+basedir="/users/juancho_gentoo/linuxstp"
+logdir="/users/juancho_gentoo/test/log"
+tgtdir="/users/juancho_gentoo/test/linuxstpStruct_rfc"
+
+if [[ ! -d "${logdir}" ]]; then
+	mkdir -p "${logdir}"
+fi
+
+cd /users/juancho_gentoo
+
+#SECONDS=0
+#dtstart_rfc=$(date --rfc-3339=ns)
+dtstart_rfc=$(date +%s.%N)
+printf '%s: %s\n' "start time is" "${dtstart_rfc}" > "${logdir}/logrfc"
+
+cd "$basedir" && find . -type d -exec mkdir -p -- "$tgtdir"/{} \;
+
+#dtend_rfc=$(date --rfc-3339=ns)
+dtend_rfc=$(date +%s.%N)
+#duration_sec=${SECONDS}
+
+exectime_real_rfc=$(printf '%s\n' "scale=50; ${dtend_rfc} - ${dtstart_rfc}" | bc -l)
+exectime_realmin_rfc=$(printf '%s\n' "scale=50; ${exectime_real_rfc}/60" | bc -l)
+exectime_realhr_rfc=$(printf '%s\n' "scale=50; ${exectime_realmin_rfc}/60" | bc -l)
+exectime_realday_rfc=$(printf '%s\n' "scale=50; ${exectime_realhr_rfc}/24" | bc -l)
+
+#duration_min=$((duration_sec / 60))
+#duration_hr=$((duration_min / 60))
+#duration_day=$((duration_hr / 24))
+
+printf '%s: %s\n' "finish time is" "${dtend_rfc}" >> "${logdir}/logrfc"
+printf '%s: %s\n' "execution real time is" "${exectime_real_rfc}" >> "${logdir}/logrfc"
+printf '%s: %s\n' "execution time in minutes is" "${exectime_realmin_rfc}" >> "${logdir}/logrfc"
+printf '%s: %s\n' "execution time in hours is" "${exectime_realhr_rfc}" >> "${logdir}/logrfc"
+printf '%s: %s\n' "execution time in days is" "${exectime_realday_rfc}" >> "${logdir}/logrfc"
+
+#printf '%s: %s\n' "execution time in seconds is" "${duration_sec}" >> "${logdir}/logrfc"
+#printf '%s: %s\n' "execution time in minutes is" "${duration_min}" >> "${logdir}/logrfc"
+#printf '%s: %s\n' "execution time in hours is" "${duration_hr}" >> "${logdir}/logrfc"
+#printf '%s: %s\n' "execution time in days is" "${duration_day}" >> "${logdir}/logrfc"

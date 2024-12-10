@@ -1,0 +1,1 @@
+dd if=/dev/sdc of=/laynestaley88/juanchocore/rpiimg/rpisandisk.img bs=1000M status=progress

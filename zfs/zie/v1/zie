@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+# version 1.2
+
+# changed variable setting from a fixed value
+# that is input from an argument to an index
+# that will access an array variable in a con-
+# ditional test to simplify the script
+
+impexpindex="$1"
+poolindex="$2"
+
+impexp=("import" "export")
+pool=("booklib" "data_01" "msk_01" "dirt1991")
+
+zpool ${impexp["$impexpindex"]} ${pool["$poolindex"]}

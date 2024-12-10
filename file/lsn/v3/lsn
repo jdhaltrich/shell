@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+variant="${argsarray[0]}"
+
+if [[ "${argsarray[1]}" == "" ]]; then
+    targetdir="."
+else
+    targetdir="${argsarray[1]}"
+fi
+
+newls() {
+    printf '%s\n' "${targetdir}"
+    case "${variant}" in
+        f)
+            find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+            ls -lah --color=auto --time-style=full-iso "${targetdir}"
+            ;;
+        fg)
+            find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+            ls -lah --color=auto --time-style=full-iso --group-directories-first "${targetdir}"
+            ;;
+        ft)
+            find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+            ls -lahtr --color=auto --time-style=full-iso "${targetdir}"
+            ;;
+        fR)
+            ls -lahR --color=auto --time-style=full-iso "${targetdir}"
+            ;;
+        ftR)
+            ls -lahtrR --color=auto --time-style=full-iso "${targetdir}"
+            ;;
+    esac
+}
+
+newls ${variant} "${targetdir}"

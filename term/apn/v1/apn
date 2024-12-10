@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+append_string="${argsarray[0]}"
+targetfile="${argsarray[1]}"
+
+printf '%s\n' "${append_string}" >> "${targetfile}"

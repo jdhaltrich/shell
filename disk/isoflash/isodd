@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+targetdir="${argsarray[0]}"
+isoimage="${argsarray[1]}"
+targetdrive="${argsarray[2]}"
+cd "${targetdir}"
+isosizebytes=$(du -sb "${isoimage}" | cut -f 1)
+dd if="${isoimage}" bs=2500M | pv -s "${isosizebytes}" | dd of="${targetdrive}" bs=2500M

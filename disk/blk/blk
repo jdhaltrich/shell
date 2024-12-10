@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+lsblk -afm
+
+case "$(id -un)" in
+	root)
+		printf '\n'
+		blkid
+		;;
+esac

@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+argsarray=("$@")
+blockdevice="/dev/${argsarray[0]}"
+drivetype="${argsarray[1]}"
+partitions="${argsarray[2]}"
+size_part=()
+if [[ ${#size_part[@]} -eq 0 ]]; then
+	partname="${argsarray[3]}"
+else
+	partname=""
+fi
+
+if [[ -z "${partname}" ]]; then
+	printf '%s\n' "no name"
+else
+	printf '%s\n' "${partname}"
+fi
+
+partitiondisk () {
+	wipefs -a "$blockdevice"
+#	sgdisk -Z "${blockdevice}"
+	sgdisk -o "${blockdevice}"
+#	sgdisk -g "${blockdevice}"
+	sector_start=()
+	sector_end=()
+
+	for (( i = 1; i <= ${partitions}; i++ )); do
+		if [[ $i -eq 1 ]]; then
+			sector_start[$((i-1))]=2048
+		else
+			sector_start[$((i-1))]=$((${sector_end[$((i-2))]}+2048))
+		fi
+
+		if [[ $i -lt ${partitions} ]]; then
+			sector_end[$((i-1))]=$((${sector_start[$((i-1))]}+(${size_part[$((i-1))]})*2*(1024**2)))
+		else
+			last_sector=$(gdisk -l "${blockdevice}" | grep "usable" | cut -d " " -f 10)
+			sector_end[$((i-1))]=${last_sector}
+		fi
+	done
+
+	case "${drivetype}" in
+		sysdrive)
+			for (( i = 1; i <= ${partitions}; i++ )); do
+				if [[ $i = 1 ]]; then
+					sgdisk -n=$i:${sector_start[$((i-1))]}:${sector_end[$((i-1))]} -t=$i:EF00 "${blockdevice}"
+				else
+					sgdisk -n=$i:${sector_start[$((i-1))]}:${sector_end[$((i-1))]} -t=$i:8300 "${blockdevice}"
+				fi
+			done
+			;;
+		extdrive)
+			for (( i = 1; i <= ${partitions}; i++ )); do
+				if [[ $i -eq 1 ]]; then
+					sgdisk -n=$i:${sector_start[$((i-1))]}:${sector_end[$((i-1))]} -t=$i:8300 "${blockdevice}" -c=$i:"${partname}"
+				else
+					sgdisk -n=$i:${sector_start[$((i-1))]}:${sector_end[$((i-1))]} -t=$i:8300 "${blockdevice}"
+				fi
+			done
+			;;
+	esac
+}
+
+partitiondisk "${blockdevice}" "${drivetype}" "${partitions}"

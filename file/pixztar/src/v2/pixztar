@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+switchscr="${argsarray[0]}"
+switchtype=${argsarray[1]}
+basedir="${argsarray[2]}"
+target="${argsarray[3]}"
+threads=${argsarray[4]}
+
+### switch reference
+## switch script
+# c - compress target directory and create tarball
+# x - decompress file and extract tarball
+## switch type
+# 1 - use pixz
+# 2 - use xz
+
+cd "${basedir}"
+
+compress () {
+    case ${switchtype} in
+        1)
+            tar -cvp -f "${target}.tar" "${target}"
+            rm -rv "${target}"
+            pixz -e -p ${threads} -i "${target}.tar" -o "${target}.tar.pxz"
+            rm -v "${target}.tar"
+            ;;
+        2)
+            tar -cvp -f "${target}.tar" "${target}"
+            rm -rv "${target}"
+            xz -z -9e -T ${threads} -v "${target}.tar"
+            ;;
+    esac
+}
+
+decompress () {
+    case ${switchtype} in
+        1)
+            pixz -d -p ${threads} -i "${target}.tar.pxz" -o "${target}.tar"
+            rm -v "${target}.tar.pxz"
+            tar -xvpf "${target}.tar"
+            rm -v "${target}.tar"
+            ;;
+        2)
+            tar -Jxfv "${target}.tar.xz"
+            rm -v "${target}.tar.xz"
+            ;;
+    esac
+}
+
+scrmode () {
+    case "${switchscr}" in
+        c)
+            compress ${switchtype} "${target}" ${threads}
+            ;;
+        x)
+            decompress ${switchtype} "${target}" ${threads}
+            ;;
+    esac
+}
+
+scrmode "${switchscr}"

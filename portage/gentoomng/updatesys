@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+option="$1"
+program="$2"
+
+case "$option" in
+	ins)
+		emerge -avuDN "$program"
+		;;
+	chk)
+		emerge --search "$program"
+		equery uses "$program"
+		;;
+	dep)
+		equery d "$program"
+		;;
+	rdp)
+		equery g "$program"
+		;;
+	inf)
+		emerge --info
+		;;
+	cln)
+		if [[ "$program" == "@world" ]]; then
+			emerge --depclean
+		else
+			emerge --depclean "$program"
+		fi
+		;;
+esac

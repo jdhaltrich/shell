@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+line_scroll="$1"
+targetdir="$2"
+
+n3f () {
+	if [[ "${targetdir}" == "" ]]; then
+		nnn -dHiQRuU -l "${line_scroll}" "$PWD"
+	else
+		nnn -dHiQRuU -l "${line_scroll}" "${targetdir}"
+	fi
+}
+
+n3f "${line_scroll}" "${targetdir}"

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+mntumnt="$1"
+blkdevice="$2"
+offsetblk01="$3"
+offsetblk02="$4"
+offsetblk03="$5"
+offsetblk04="$6"
+offsetblk05="$7"
+offsetblk06="$8"
+
+if [[ "$mntumnt" == "mount" ]]; then
+	mount "$blkdevice" -o loop=/dev/loop0,offset=$(( 512 * "$offsetblk01")) /mnt/local/drive_01/
+	if [[ "$offsetblk02" != "" ]]; then
+		mount "$blkdevice" -o loop=/dev/loop1,offset=$(( 512 * "$offsetblk02")) /mnt/local/drive_02/
+	elif [[ "$offsetblk03" != "" ]]; then
+		mount "$blkdevice" -o loop=/dev/loop2,offset=$(( 512 * "$offsetblk03")) /mnt/local/drive_03/
+	elif [[ "$offsetblk04" != "" ]]; then
+		mount "$blkdevice" -o loop=/dev/loop3,offset=$(( 512 * "$offsetblk04")) /mnt/local/drive_04/
+	elif [[ "$offsetblk05" != "" ]]; then
+		mount "$blkdevice" -o loop=/dev/loop4,offset=$(( 512 * "$offsetblk05")) /mnt/local/drive_05/
+	elif [[ "$offsetblk06" != "" ]]; then
+		mount "$blkdevice" -o loop=/dev/loop5,offset=$(( 512 * "$offsetblk06")) /mnt/local/drive_06/
+	fi
+elif [[ "$mntumnt" == "unmount" ]]; then
+	umount /mnt/local/drive_0{1,2,3,4,5,6}
+fi

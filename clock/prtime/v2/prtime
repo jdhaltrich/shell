@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+switch=$1
+starttime=$2
+finishtime=$3
+
+exectime () {
+	local -a exectime
+	exectime=()
+	exectime[0]=$(printf '%s\n' "scale=50; ${finishtime} - ${starttime}" | bc -l)
+	exectime[1]=$(printf '%s\n' "scale=50; ${exectime[0]}/60" | bc -l)
+	exectime[2]=$(printf '%s\n' "scale=50; ${exectime[1]}/60" | bc -l)
+	exectime[3]=$(printf '%s\n' "scale=50; ${exectime[2]}/24" | bc -l)
+	
+	case ${switch} in
+		0)
+			printf '%s\n' "${exectime[0]}"
+			;;
+		1)
+			printf '%s\n' "${exectime[1]}"
+			;;
+		2)
+			printf '%s\n' "${exectime[2]}"
+			;;
+		3)
+			printf '%s\n' "${exectime[3]}"
+			;;
+		4)
+			printf '%s\n' "${exectime[0]}"
+			printf '%s\n' "${exectime[1]}"
+			;;
+		5)
+			printf '%s\n' "${exectime[0]}"
+			printf '%s\n' "${exectime[1]}"
+			printf '%s\n' "${exectime[2]}"
+			;;
+	esac
+}
+
+exectime ${switch} ${starttime} ${finishtime}

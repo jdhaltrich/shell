@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+switch="${argsarray[0]}"
+userid="${argsarray[1]}"
+
+createuser () {
+    userbasedir="${argsarray[2]}"
+    mkdir -p "${userbasedir}/${userid}"
+    useradd -d "${userbasedir}/${userid}/home" "${userid}" -s /usr/bin/zsh
+    usermod -a -G video "${userid}"
+    usermod -a -G audio "${userid}"
+    usermod -a -G users "${userid}"
+    chown -Rc "${userid}":"${userid}" "${userbasedir}/${userid}"
+}
+
+deleteuser () {
+    userdel -r "${userid}"
+}
+
+#switch="${argsarray[0]}"
+#switch="${argsarray[0]}"
+#switch="${argsarray[0]}"
+#switch="${argsarray[0]}"
+#switch="${argsarray[0]}"
+
+scrmode () {
+    case "${switch}" in
+        cr)
+            createuser
+            ;;
+        del)
+            deleteuser
+            ;;
+    esac
+}
+
+scrmode "${switch}"

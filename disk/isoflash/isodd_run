@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+./isodd "$1" "$2" /dev/sdb

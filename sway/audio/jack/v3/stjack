@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+opt="${argsarray[0]}"
+
+case "$(id -un)" in
+    root)
+        printf '%s\n' "root user can't start jack server!"
+        exit
+        ;;
+    juancho)
+        case "${opt}" in
+            44)
+                nohup /usr/bin/jackd -R -P10 -t0 -Tuv -cs -dalsa -D -p1024 -Phw:D10 -r44100 > /dev/null 2>&1&
+                ;;
+            48)
+                nohup /usr/bin/jackd -R -P10 -t0 -Tuv -cs -dalsa -D -p1024 -Phw:D10 -r48000 > /dev/null 2>&1&
+                ;;
+            96)
+                nohup /usr/bin/jackd -R -P10 -t0 -Tuv -cs -dalsa -D -p1024 -Phw:D10 -r96000 > /dev/null 2>&1&
+                ;;
+        esac
+        ;;
+    git)
+        printf '%s\n' "git user can't start jack server!"
+        exit
+        ;;
+esac

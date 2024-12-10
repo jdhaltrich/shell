@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+userid="${argsarray[0]}"
+
+faillock --user "${userid}" --reset

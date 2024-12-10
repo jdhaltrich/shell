@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+userbasedirs=("/laynestaley88" "/users/juancho_gentoo" "/users/git")
+
+if [[ $(id -un) == "root" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[0]}")
+elif [[ $(id -un) == "juancho" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[1]}")
+elif [[ $(id -un) == "git" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[2]}")
+fi
+
+printf '%s\n' $PPID
+printf '%s\n' $$
+
+#seconds="0.5"
+
+#start="$(($(date +%s) + $seconds))"
+#while [[ "$start" -ge $(date +%s) ]]; do
+#	time="$(( $start - $(date +%s) ))"
+#	printf '%s\r' "$(date -u -d "@$time" +%H:%M:%S)"
+#done
+
+cd "${selectedbasedir}"
+printf '%s\n' "${selectedbasedir}"
+exit

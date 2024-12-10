@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+variant="$1"
+line_scroll="$2"
+targetdir="$3"
+
+userbasedirs=("/laynestaley88" "/users/juancho_gentoo" "/users/git")
+
+if [[ $(id -un) == "root" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[0]}")
+elif [[ $(id -un) == "juancho" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[1]}")
+elif [[ $(id -un) == "git" ]]; then
+	selectedbasedir=$(printf '%s\n' "${userbasedirs[2]}")
+fi
+
+n3f () {
+	case "${variant}" in
+		1)
+			nnn -dHiQRuU -l "${line_scroll}" "${selectedbasedir}"
+			;;
+		2)
+			if [[ "${targetdir}" == "" ]]; then
+				nnn -dHiQRuU -l "${line_scroll}" "$PWD"
+			else
+				nnn -dHiQRuU -l "${line_scroll}" "${targetdir}"
+			fi
+			;;
+	esac
+}
+
+n3f "${variant}" "${line_scroll}" "${targetdir}"

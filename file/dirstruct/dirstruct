@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+basedir="$1"
+tgtdir="$2"
+
+cd "${basedir}" && find . -type d -exec mkdir -p -- "${tgtdir}"/{} \;

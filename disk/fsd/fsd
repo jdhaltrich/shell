@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+blockdevice="/dev/$1"
+drivetype="$2"
+partitions="$3"
+
+formatdisk () {
+	case "${drivetype}" in
+		sysdrive)
+			for (( i = 1; i <= ${partitions}; i++ )); do
+				wipefs -a "${blockdevice}$i"
+				if [[ $i = 1 ]]; then
+					mkfs.vfat -F 32 "${blockdevice}$i"
+				else
+					mkfs.xfs -f "${blockdevice}$i"
+				fi
+			done
+			;;
+		extdrive)
+			for (( i = 1; i <= ${partitions}; i++ )); do
+				wipefs -a "${blockdevice}$i"
+				mkfs.xfs -f "${blockdevice}$i"
+			done
+			;;
+	esac
+}
+
+formatdisk "${blockdevice}" "${drivetype}" "${partitions}"

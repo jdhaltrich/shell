@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+
+printf '%s\n' "$(date +%s.%N)"
+printf '%s\n' "$(date --iso-8601=ns)"

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# version 1.5
+
+variant="$1"
+targetdir="$2"
+
+newls () {
+	if [[ "${targetdir}" == "" ]]; then
+		printf '%s\n' "$PWD"
+		case ${variant} in
+			f)
+				find "$PWD" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lah --color=auto --time-style=full-iso "$PWD"
+				;;
+			fg)
+				find "$PWD" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lah --color=auto --time-style=full-iso --group-directories-first "$PWD"
+				;;
+			ft)
+				find "$PWD" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lahtr --color=auto --time-style=full-iso "$PWD"
+				;;
+			fR)
+				ls -lahR --color=auto --time-style=full-iso "$PWD"
+				;;
+			ftR)
+				ls -lahtrR --color=auto --time-style=full-iso "$PWD"
+				;;
+		esac
+	else
+		printf '%s\n' "${targetdir}"
+		case ${variant} in
+			f)
+				find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lah --color=auto --time-style=full-iso "${targetdir}"
+				;;
+			fg)
+				find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lah --color=auto --time-style=full-iso --group-directories-first "${targetdir}"
+				;;
+			ft)
+				find "${targetdir}" -mindepth 1 -maxdepth 1 -type d,f | wc -l
+				ls -lahtr --color=auto --time-style=full-iso "${targetdir}"
+				;;
+			fR)
+				ls -lahR --color=auto --time-style=full-iso "${targetdir}"
+				;;
+			ftR)
+				ls -lahtrR --color=auto --time-style=full-iso "${targetdir}"
+				;;
+		esac
+	fi
+}
+
+newls ${variant} "${targetdir}"

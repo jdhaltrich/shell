@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+datens=$(date --iso-8601=ns | sed -e 's/://g;s/-/_/3g;s/-//g;s/T/t/g;s/,/_/g')
+
+termidfull=$(source tp)
+termuser=$(id -un)
+
+vtconsole01=$(printf '%s\n' $(tty) | cut -d "/" -f 3)
+
+if [[ "${vtconsole01}" == "pts" ]]; then
+	vtconsole02=$(printf '%s\n' $(tty) | cut -d "/" -f 4)
+	vtconsole="${vtconsole01}${vtconsole02}"
+else
+	vtconsole="${vtconsole01}"
+fi
+
+filenm="/users/juancho_gentoo/linuxstp/install/linux_kernel/history/${termuser}_${vtconsole}_${datens}"
+
+printf '%s\n\n' "${termidfull}" > "${filenm}"
+source history >> "${filenm}"

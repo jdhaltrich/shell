@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+targetlogin="${argsarray[0]}"
+
+cat "/mnt/zfs/data/data01/passwdvault/${targetlogin}.md"

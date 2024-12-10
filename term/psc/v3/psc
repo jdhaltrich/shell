@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+vtcon="${argsarray[0]}"
+vtnum="${argsarray[1]}"
+
+userid="$(id -un)"
+datetime_ns="$(date --rfc-3339=ns)"
+datetime_nsfmt="$(printf '%s\n' "$datetime_ns" | sed -e 's/://g' -e 's/\./_/g' -e 's/ /t/g' -e 's/-/ /g;s/ /-/3g' -e 's/ //g' -e 's/-/m/g')"
+filename="/users/juancho/img/fbgrab/${userid}/${userid}_0${vtcon}_0${vtnum}_${datetime_nsfmt}.png"
+
+pscreen () {
+	if [[ $vtnum != "10" ]]; then
+		fbgrab -v -d /dev/fb0 -w 2560 -h 1440 -l 2560 -b 32 -s 3 "${filename}"
+	else
+		fbgrab -v -d /dev/fb0 -w 2560 -h 1440 -l 2560 -b 32 -s 3 "${filename}"
+	fi
+}
+
+pscreen "${filename}"
+chown juancho:juancho "${filename}"

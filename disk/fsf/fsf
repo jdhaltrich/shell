@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+blockdevice="$1"
+drivetype="$2"
+partitions="$3"
+
+sgd "${blockdevice}" "${drivetype}" "${partitions}"
+fsd "${blockdevice}" "${drivetype}" "${partitions}"

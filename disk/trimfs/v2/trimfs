@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+argsarray=("$@")
+refreshlvl=${argsarray[0]}
+
+set -o errexit
+
+function trimallfs() {
+	fstrim -v /users
+	fstrim -v /databases/mysqldb
+	fstrim -v /databases/postgresqldb
+	fstrim -v /
+}
+
+function envupdtsrc() {
+	env-update && source /etc/profile
+}
+
+if [[ ${refreshlvl} -eq 1 ]]; then
+	trimallfs
+elif [[ ${refreshlvl} -eq 2 ]]; then
+	envupdtsrc
+elif [[ ${refreshlvl} -eq 3 ]]; then
+	trimallfs
+	envupdtsrc
+fi
