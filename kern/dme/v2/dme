@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-date_ns=$(date --iso-8601=ns | sed -e 's/://g;s/-/_/3g;s/-//g;s/T/t/g;s/,/_/g')
-
-filename="/laynestaley88/jdhaltrich/linuxstp/install/linux_kernel/dmesg_d/dmesg_extracts/dmesg_extract_${date_ns}"
-
-dmesg --time-format iso > "${filename}"
-chown -c juancho:juancho "${filename}"
