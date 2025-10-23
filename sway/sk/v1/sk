@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-swaylock --ignore-empty-password --show-failed-attempts

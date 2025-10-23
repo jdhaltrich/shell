@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# disables the touchpad and trackpad for the session. they
-# are enabled once relogin
-
-swaymsg input 2:1:PS/2_Synaptics_TouchPad events disabled
-#swaymsg input 2:1:PS/2_Synaptics_TouchPad events enabled
-swaymsg output HDMI-A-1 scale 1
