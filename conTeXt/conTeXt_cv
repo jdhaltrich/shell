@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-src_path="$1"
-/usr/manual/install/context/context/tex/texmf-linux-64/bin/context --pdf "${src_path}/src.tex"
