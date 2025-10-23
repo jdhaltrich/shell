@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-xargs bash -c 'nohup firefox $@ > /dev/null 2>&1&' null < $1
